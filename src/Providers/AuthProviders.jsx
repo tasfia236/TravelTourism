@@ -1,58 +1,56 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import auth from '../firebase/firebase.config';
 import PropTypes from 'prop-types';
 // import axios from "axios";
 
+
 export const AuthContext = createContext(null);
 
 const AuthProviders = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [loading, setloading] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     const createUser = (email, password) => {
-        setloading(true);
-        return createUserWithEmailAndPassword(auth, email, password);
+        setLoading(true);
+        return createUserWithEmailAndPassword(auth, email, password)
     }
 
-    const signInUser = (email, password) => {
-        setloading(true);
+    const signIn = (email, password) => {
+        setLoading(true);
         return signInWithEmailAndPassword(auth, email, password);
     }
 
     const logOut = () => {
-        setloading(true);
+        setLoading(true);
         return signOut(auth);
+    }
+
+    const updateUserProfile = (name, photo) => {
+        return updateProfile(auth.currentUser, {
+            displayName: name, photoURL: photo
+        });
     }
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
-            // const userEmail = currentUser?.email || user?.email;
-            // const loggedUser = { email: userEmail };
             setUser(currentUser);
             console.log('current user', currentUser);
-            setloading(false);
-            // if (currentUser) {
-            //     axios.post('https://localhost:8000/jwt', loggedUser, { withCredentials: true })
-            //         .then(res => {
-            //             console.log('token response', res.data);
-            //         })
-            // } 
-            // else {
-            //     axios.post('https://localhost:8000/logout', loggedUser, {
-            //         withCredentials: true
-            //     })
-            //         .then(res => {
-            //             console.log(res.data);
-            //         })
-            // }
+            setLoading(false);
         });
         return () => {
-            unsubscribe();
+            return unsubscribe();
         }
     }, [])
 
-    const authInfo = { user, loading, createUser, signInUser, logOut }
+    const authInfo = {
+        user,
+        loading,
+        createUser,
+        signIn,
+        logOut,
+        updateUserProfile
+    }
 
     return (
         <AuthContext.Provider value={authInfo}>

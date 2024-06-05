@@ -1,125 +1,148 @@
 import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, Navigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Providers/AuthProviders";
-import Swal from "sweetalert2";
-import authpic from "../../assets/auth/img-1.jpeg"
+import { Link, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
+import authpic from '../../assets/auth/img-1.jpeg'
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import auth from "../../firebase/firebase.config";
 
 const SignUp = () => {
-    const { createUser, updateUser } = useContext(AuthContext);
+    const googleProvider = new GoogleAuthProvider();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const { createUser, updateUserProfile } = useContext(AuthContext);
+    const navigate = useNavigate();
 
-    const handleregister = e => {
-        e.preventDefault();
-        const displayName = e.target.name.value;
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-        const photoURL = e.target.photo.value;
-
-        const data = { email, password, displayName, photoURL }
+    const onSubmit = data => {
         console.log(data);
-
-        createUser(email, password)
+        createUser(data.email, data.password)
             .then(result => {
-                console.log(result.user);
-                updateUser(displayName, photoURL)
-                    .then(res => {
-                        console.log(res.user);
-                        Navigate('/')
+                const loggedUser = result.user;
+                console.log(loggedUser);
+                updateUserProfile(data.name, data.photoURL)
+                    .then(() => {
+                        console.log('user profile info updated')
+                        reset();
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'User created successfully.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        navigate('/');
+
                     })
-                Swal.fire({
-                    title: "User Successfully Registered",
-                    icon: "success",
-                    showClass: {
-                        popup: `
-                        animate__animated
-                        animate__fadeInUp
-                        animate__faster
-                      `
-                    },
-                    hideClass: {
-                        popup: `
-                        animate__animated
-                        animate__fadeOutDown
-                        animate__faster
-                      `
-                    }
-                });
+                    .catch(error => console.log(error))
             })
-            .catch(error => {
-                Swal.fire({
-                    title: `error registering, ${error.code}`,
-                    icon: "warning",
-                    showClass: {
-                        popup: `
+    };
+
+    
+    const HandleGoogleSignIn = () => {
+        signInWithPopup(auth, googleProvider)
+            .then(res => {
+         //       const email = result.user.email;
+         //       console.log(email);
+        //        const user = { email };
+        //        console.log(user);
+
+         //       axios.post('https://testy-food-server-ten.vercel.app/jwt', user, { withCredentials: true })
+         //           .then(res => {
+                        console.log(res.data);
+                        if (res.data.success) {
+                            Swal.fire({
+                                title: "User Logged In Successfully",
+                                icon: "success",
+                                showClass: {
+                                    popup: `
                         animate__animated
                         animate__fadeInUp
                         animate__faster
                       `
-                    },
-                    hideClass: {
-                        popup: `
+                                },
+                                hideClass: {
+                                    popup: `
                         animate__animated
                         animate__fadeOutDown
                         animate__faster
                       `
-                    }
-                });
+                                }
+                            });
+                            navigate(location?.state ? location.state : '/')
+                        }
+                    })
+     //       })
+            .catch(error => {
                 console.error(error);
             })
     }
 
     return (
-        <div className="p-12 min-h-screen bg-base-200">
+        <>
             <Helmet>
-                <title>Travel Tourism  | Registration</title>
+                <title>Travel Tourism | Sign Up</title>
             </Helmet>
-            <div className="">
-                <div className="text-center lg:text-left m-8">
-                    <h1 className="text-5xl font-bold">Register now!</h1>
-                </div>
-                <div className="card lg:card-side shadow-2xl bg-base-100">
-                    <div className="lg:w-[52%] lg:h-[60%]">
-                        <img className="w-full h-96 lg:h-[480px]" src={authpic} alt="" />
+            <div className="p-12 min-h-screen bg-base-200">
+                <div className="">
+                    <div className="text-center lg:text-left mt-12 mb-8">
+                        <h1 className="text-5xl font-bold">Register now!</h1>
                     </div>
-                    <form onSubmit={handleregister} className="card-body">
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Name</span>
-                            </label>
-                            <input type="text" placeholder="Your name" name="name" className="input input-bordered" required />
+                    <div className="card lg:card-side shadow-2xl bg-base-100">
+                        <div className="lg:w-[52%] lg:h-[60%]">
+                            <img className="w-full h-96 lg:h-[480px]" src={authpic} alt="" />
                         </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Email</span>
-                            </label>
-                            <input type="email" placeholder="email" name="email" className="input input-bordered" required />
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">PhotoURL</span>
-                            </label>
-                            <input type="text" placeholder="Photo URL" name="photo" className="input input-bordered" required />
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Password</span>
-                            </label>
-                            <input type="password" placeholder="password" name="password" className="input input-bordered" required />
-                            <label className="label">
-                                <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
-                            </label>
-                        </div>
-                        <div className="form-control mt-6">
-                            <button className="btn btn-primary">Register</button>
-                        </div>
-                        <p className="pl-5">
-                            Already have an account? <Link to='/login'> <button className="btn btn-link">LogIn</button></Link>
-                        </p>
-                    </form>
-
+                        <form onSubmit={handleSubmit(onSubmit)} className="card-body">
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Name</span>
+                                </label>
+                                <input type="text"  {...register("name", { required: true })} name="name" placeholder="Name" className="input input-bordered" />
+                                {errors.name && <span className="text-red-600">Name is required</span>}
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Photo URL</span>
+                                </label>
+                                <input type="text"  {...register("photoURL", { required: true })} placeholder="Photo URL" className="input input-bordered" />
+                                {errors.photoURL && <span className="text-red-600">Photo URL is required</span>}
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Email</span>
+                                </label>
+                                <input type="email"  {...register("email", { required: true })} name="email" placeholder="email" className="input input-bordered" />
+                                {errors.email && <span className="text-red-600">Email is required</span>}
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Password</span>
+                                </label>
+                                <input type="password"  {...register("password", {
+                                    required: true,
+                                    minLength: 6,
+                                    maxLength: 20,
+                                    pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/
+                                })} placeholder="password" className="input input-bordered" />
+                                {errors.password?.type === 'required' && <p className="text-red-600">Password is required</p>}
+                                {errors.password?.type === 'minLength' && <p className="text-red-600">Password must be 6 characters</p>}
+                                {errors.password?.type === 'maxLength' && <p className="text-red-600">Password must be less than 20 characters</p>}
+                                {errors.password?.type === 'pattern' && <p className="text-red-600">Password must have one Uppercase one lower case, one number and one special character.</p>}
+                            </div>
+                            <div className="form-control mt-6">
+                                <input className="btn btn-primary" type="submit" value="Sign Up" />
+                            </div>
+                            <div className="form-control">
+                                <button onClick={HandleGoogleSignIn} className="btn text-white bg-red-600">Google login</button>
+                            </div>
+                            <p className="pl-5">
+                                Already have an account? <Link to='/login'> <button className="btn btn-link">LogIn</button></Link>
+                            </p>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

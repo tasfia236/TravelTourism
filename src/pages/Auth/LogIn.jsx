@@ -11,9 +11,10 @@ import axios from "axios";
 const LogIn = () => {
 
     const googleProvider = new GoogleAuthProvider();
-    const { signInUser } = useContext(AuthContext);
+    const { signIn } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
+    const from = location.state?.from?.pathname || "/";
 
     const handleLogIn = e => {
         e.preventDefault();
@@ -21,7 +22,7 @@ const LogIn = () => {
         const password = e.target.password.value;
         //   console.log(email, password);
 
-        signInUser(email, password)
+        signIn(email, password)
             .then(result => {
                 const loggedInUser = result.user;
                 console.log(loggedInUser);
@@ -50,7 +51,7 @@ const LogIn = () => {
                               `
                                 }
                             });
-                            navigate(location?.state ? location.state : '/')
+                            navigate(from, { replace: true });
                         }
                     })
             })
@@ -160,9 +161,6 @@ const LogIn = () => {
                                 <span className="label-text">Password</span>
                             </label>
                             <input type="password" name="password" placeholder="password" className="input input-bordered" />
-                            <label className="label">
-                                <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
-                            </label>
                         </div>
                         <div className="form-control mt-6">
                             <button className="btn btn-primary">Login</button>
@@ -171,7 +169,7 @@ const LogIn = () => {
                             <button onClick={HandleGoogleSignIn} className="btn text-white bg-red-600">Google login</button>
                         </div>
                         <p className="pl-5">
-                            New Here? Please <Link to='/register'> <button className="btn btn-link">Register</button></Link>
+                            New Here? Please <Link to='/signup'> <button className="btn btn-link">Register</button></Link>
                         </p>
                     </form>
                 </div>
