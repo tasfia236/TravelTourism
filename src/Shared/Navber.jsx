@@ -41,19 +41,7 @@ const Navber = () => {
                 </ul>
             </div>
             <div className="navbar-end gap-2">
-                <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal px-1">
-                        {
-                            user && <>
-
-                                <li><a onClick={handleLogOut} >Logout</a></li>
-                                <li className=" pt-2">
-                                    {user.email}
-                                </li>
-                            </>
-                        }
-                    </ul>
-                </div>
+            <div className="navbar-center lg:flex">
                 <div className="dropdown dropdown-end">
                     {
                         user && <>
@@ -66,15 +54,24 @@ const Navber = () => {
                             </div>
                         </>
                     }
-                    <ul tabIndex={0} className="lg:hidden menu menu-sm fixed dropdown-content mt-1 z-[9999] p-2 shadow bg-base-100 rounded-box w-52">
+                    <ul tabIndex={0} className="menu menu-sm fixed dropdown-content mt-1 z-[9999] p-2 shadow bg-base-100 rounded-box w-52">
                         {user && <>
                             <li className="pl-3 font-bold text-lg">{user.displayName}</li>
                             <li className="pl-3">{user.email}</li>
-                            <li><a onClick={handleLogOut} >Logout</a></li>
+                            <li><Link to='/dashboard/home'>Dashboard</Link></li>
 
                         </>
                         }
                     </ul>
+                    <ul className="menu menu-horizontal px-1">
+                        {
+                            user && <>
+
+                                <li><a onClick={handleLogOut} >Logout</a></li>
+                            </>
+                        }
+                    </ul>
+                </div>
                 </div>
                 <div className="flex gap-3">
                     {
