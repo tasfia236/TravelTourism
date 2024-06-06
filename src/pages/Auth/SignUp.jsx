@@ -7,8 +7,10 @@ import Swal from 'sweetalert2'
 import authpic from '../../assets/auth/img-1.jpeg'
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const SignUp = () => {
+    const axiosPublic = useAxiosPublic();
     const googleProvider = new GoogleAuthProvider();
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const { createUser, updateUserProfile } = useContext(AuthContext);
@@ -22,33 +24,45 @@ const SignUp = () => {
                 console.log(loggedUser);
                 updateUserProfile(data.name, data.photoURL)
                     .then(() => {
-                        console.log('user profile info updated')
-                        reset();
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'User created successfully.',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        navigate('/');
+                        // create user entry in the database
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email
+                        }
+                        console.log(userInfo);
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('user added to the database')
+                                    reset();
+                                    Swal.fire({
+                                        position: 'top-end',
+                                        icon: 'success',
+                                        title: 'User created successfully.',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    navigate('/');
+                                }
+                            })
+
 
                     })
                     .catch(error => console.log(error))
             })
     };
 
-    
+
     const HandleGoogleSignIn = () => {
         signInWithPopup(auth, googleProvider)
-            .then(res => {
-         //       const email = result.user.email;
-         //       console.log(email);
-        //        const user = { email };
-        //        console.log(user);
-
-         //       axios.post('https://testy-food-server-ten.vercel.app/jwt', user, { withCredentials: true })
-         //           .then(res => {
+            .then(result => {
+                console.log(result.user);
+                const userInfo = {
+                    email: result.user?.email,
+                    name: result.user?.displayName
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
                         console.log(res.data);
                         if (res.data.success) {
                             Swal.fire({
@@ -72,7 +86,8 @@ const SignUp = () => {
                             navigate(location?.state ? location.state : '/')
                         }
                     })
-     //       })
+            })
+            //       })
             .catch(error => {
                 console.error(error);
             })

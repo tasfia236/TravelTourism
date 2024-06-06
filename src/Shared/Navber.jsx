@@ -41,37 +41,37 @@ const Navber = () => {
                 </ul>
             </div>
             <div className="navbar-end gap-2">
-            <div className="navbar-center lg:flex">
-                <div className="dropdown dropdown-end">
-                    {
-                        user && <>
-                            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle z-[9999] avatar">
-                                {user.photoURL ? <div className="w-10 rounded-full">
-                                    <img alt="Tailwind CSS Navbar component" src={user.photoURL} />
-                                </div>
-                                    : <div className="rounded-full pt-3 pl-3 w-10"><IoPersonOutline></IoPersonOutline></div>
-                                }
-                            </div>
-                        </>
-                    }
-                    <ul tabIndex={0} className="menu menu-sm fixed dropdown-content mt-1 z-[9999] p-2 shadow bg-base-100 rounded-box w-52">
-                        {user && <>
-                            <li className="pl-3 font-bold text-lg">{user.displayName}</li>
-                            <li className="pl-3">{user.email}</li>
-                            <li><Link to='/dashboard/home'>Dashboard</Link></li>
-
-                        </>
-                        }
-                    </ul>
-                    <ul className="menu menu-horizontal px-1">
+                <div className="navbar-center lg:flex items-center">
+                    <div className="dropdown dropdown-end flex items-center">
                         {
                             user && <>
-
-                                <li><a onClick={handleLogOut} >Logout</a></li>
+                                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle z-[9999] avatar">
+                                    {user.photoURL ? <div className="w-10 rounded-full">
+                                        <img alt="Tailwind CSS Navbar component" src={user.photoURL} />
+                                    </div>
+                                        : <div className="rounded-full pt-3 pl-3 w-10"><IoPersonOutline></IoPersonOutline></div>
+                                    }
+                                </div>
                             </>
                         }
-                    </ul>
-                </div>
+                        <ul tabIndex={0} className="menu menu-sm fixed dropdown-content mt-1 z-[9999] p-2 shadow bg-base-100 rounded-box w-52">
+                            {user && <>
+                                <li className="pl-3 font-bold text-lg">{user.displayName}</li>
+                                <li className="pl-3">{user.email}</li>
+                                <li><Link to='/dashboard/home'>Dashboard</Link></li>
+
+                            </>
+                            }
+                        </ul>
+                        <ul className="menu menu-horizontal px-1">
+                            {
+                                user && <>
+
+                                    <li><a onClick={handleLogOut} >Logout</a></li>
+                                </>
+                            }
+                        </ul>
+                    </div>
                 </div>
                 <div className="flex gap-3">
                     {

@@ -7,9 +7,10 @@ import { AuthContext } from "../../Providers/AuthProviders";
 import auth from "../../firebase/firebase.config";
 import authpic from "../../assets/auth/img-1.jpeg";
 import axios from "axios";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const LogIn = () => {
-
+    const axiosPublic = useAxiosPublic();
     const googleProvider = new GoogleAuthProvider();
     const { signIn } = useContext(AuthContext);
     const location = useLocation();
@@ -76,16 +77,15 @@ const LogIn = () => {
                 });
             });
     }
-
     const HandleGoogleSignIn = () => {
         signInWithPopup(auth, googleProvider)
             .then(result => {
-                const email = result.user.email;
-                console.log(email);
-                const user = { email };
-                console.log(user);
-
-                axios.post('https://testy-food-server-ten.vercel.app/jwt', user, { withCredentials: true })
+                console.log(result.user);
+                const userInfo = {
+                    email: result.user?.email,
+                    name: result.user?.displayName
+                }
+                axiosPublic.post('/users', userInfo)
                     .then(res => {
                         console.log(res.data);
                         if (res.data.success) {
@@ -111,25 +111,8 @@ const LogIn = () => {
                         }
                     })
             })
+            //       })
             .catch(error => {
-                Swal.fire({
-                    title: `error logging in, ${error.code}`,
-                    icon: "warning",
-                    showClass: {
-                        popup: `
-                        animate__animated
-                        animate__fadeInUp
-                        animate__faster
-                      `
-                    },
-                    hideClass: {
-                        popup: `
-                        animate__animated
-                        animate__fadeOutDown
-                        animate__faster
-                      `
-                    }
-                });
                 console.error(error);
             })
     }
