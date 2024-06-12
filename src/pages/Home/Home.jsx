@@ -1,5 +1,5 @@
 import Banner from "../../Shared/Banner";
-import Tourism from "./Tourism/Tourism";
+import Tourism from "./TourismGuide/Tourism";
 
 const Home = () => {
     return (
