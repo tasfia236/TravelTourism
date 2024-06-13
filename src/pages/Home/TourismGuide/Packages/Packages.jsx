@@ -1,7 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import SinglePackage from "./SinglePackage";
-
+import { Link } from "react-router-dom";
 const Packages = () => {
     const { isPending, isError, error, data: spots } = useQuery({
         queryKey: ['spots'],
@@ -12,7 +12,7 @@ const Packages = () => {
     })
     console.log(spots);
 
-    
+
     if (isPending) {
         return <span className="loading loading-spinner text-primary"></span>
     }
@@ -24,10 +24,17 @@ const Packages = () => {
 
     return (
         <div className="grid lg:grid-cols-3 sm:grid-cols-1 gap-y-5 m-12 gap-8">
-                                {
-                        spots?.slice(0, 3).map(spot => <SinglePackage key={spot._id} spot={spot}></SinglePackage>)
-                    }
+            {
+                spots?.slice(0, 3).map(spot => <SinglePackage
+                    key={spot._id}
+                    spot={spot}
+                ></SinglePackage>)
+            }
+            <div className="flex justify-center pt-5">
+                <Link to='/allpackages'><button className="btn btn-neutral">All Packages</button></Link>
+            </div>
         </div>
+
     );
 };
 
