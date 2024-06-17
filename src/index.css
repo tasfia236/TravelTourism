@@ -2,35 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
-
-body {
-  background: #eee;
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  color: #000;
-  margin: 0;
-  padding: 0;
+.package-details {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
 }
 
-.swiper {
-  width: 100%;
-  height: 100%;
+.package-details h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
 }
 
-.swiper-slide {
-  text-align: center;
-  font-size: 18px;
-  background: #fff;
-
-  /* Center slide text vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.package-details .tour-type {
+    font-style: italic;
+    color: #555;
 }
 
-.swiper-slide img {
-  display: block;
-  width: 100%;
-  height: 500px;
-  object-fit: cover;
+.tour-type{
+    text-transform: uppercase;
+}
+
+.package-details .price {
+    font-size: 1.5em;
+    color: #e91e63;
+    margin: 20px 0;
+}
+
+.description, .tour-plan {
+    text-align: left;
+    margin-top: 40px;
+}
+
+.description h2,  .tour-plan h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.description p, .tour-plan p {
+    font-size: 1em;
+    color: #333;
+    line-height: 1.6;
+    padding-left: 12px;
+}
+
+.tour-plan .tour-day {
+    margin-bottom: 20px;
+}
+
+.tour-plan .tour-day h3 {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    background-color: #b9b7b7;
+    padding-left: 10px;
+    border-radius: 10px;
 }

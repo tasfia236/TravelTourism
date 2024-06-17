@@ -2,7 +2,7 @@
 import 'swiper/css';
 import 'swiper/css/scrollbar';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import '../index.css';
+import '../assets/banner.css';
 
 // import required modules
 import { Scrollbar } from 'swiper/modules';

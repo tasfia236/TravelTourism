@@ -1,12 +1,12 @@
 
-import redHeart from '../../../../assets/icons/red_hearts.png';
-import heartOutline from '../../../../assets/icons/heart_outline.png';
-import useAxiosPublic from '../../../../hooks/useAxiosPublic';
+import redHeart from '../../assets/icons/red_hearts.png';
+import heartOutline from '../../assets/icons/heart_outline.png';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const SinglePackage = ({ spot }) => {
+const PackageCard = ({ spot }) => {
     const { _id, spot_image, tour_type, trip_title, price, wishlist } = spot;
 
     const axiosPublic = useAxiosPublic();
@@ -51,11 +51,11 @@ const SinglePackage = ({ spot }) => {
                 <p>{tour_type}</p>
                 <p>Price: {price}</p>
                 <div className="card-actions">
-                    <Link to={`/details/${_id}`}><button className="btn bg-blue-400 text-white font-bold p-2">View Package</button></Link>
+                    <Link to={`/details/${_id}`}><button className="btn btn-primary">View Package</button></Link>
                 </div>
             </div>
         </div >
     );
 };
 
-export default SinglePackage;
+export default PackageCard;

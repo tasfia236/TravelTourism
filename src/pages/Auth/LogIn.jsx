@@ -30,7 +30,7 @@ const LogIn = () => {
                 const user = { email }
                 console.log(user);
 
-                axios.post('https://testy-food-server-ten.vercel.app/jwt', user, { withCredentials: true })
+                axiosPublic.post('/jwt', user, { withCredentials: true })
                     .then(res => {
                         console.log(res.data);
                         if (res.data.success) {

@@ -1,8 +1,10 @@
 
 import { useQuery } from "@tanstack/react-query";
-import SinglePackage from "./SinglePackage";
 import { Link } from "react-router-dom";
-const Packages = () => {
+import PackageCard from "./PackageCard";
+
+
+const AllPackages = () => {
     const { isPending, isError, error, data: spots } = useQuery({
         queryKey: ['spots'],
         queryFn: async () => {
@@ -24,20 +26,18 @@ const Packages = () => {
 
     return (
         <div>
-            <div className="grid lg:grid-cols-3 sm:grid-cols-1 gap-y-5 m-12 gap-8">
+            <h1 className="font-black text-sky-600 text-4xl text-center pt-24 pb-12">All Packages</h1>
+            <div className="grid lg:grid-cols-3 sm:grid-cols-1 gap-y-5 gap-8">
                 {
-                    spots?.slice(0, 3).map(spot => <SinglePackage
+                    spots?.map(spot => <PackageCard
                         key={spot._id}
                         spot={spot}
-                    ></SinglePackage>)
+                    ></PackageCard>)
                 }
-            </div>
-            <div className="pt-5 border-3">
-                <Link to='/allpackages'><button className="btn btn-outline mx-auto">All Packages</button></Link>
             </div>
         </div>
 
     );
 };
 
-export default Packages;
+export default AllPackages;
