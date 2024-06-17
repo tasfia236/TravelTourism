@@ -27,7 +27,8 @@ const SignUp = () => {
                         // create user entry in the database
                         const userInfo = {
                             name: data.name,
-                            email: data.email
+                            email: data.email,
+                            role: 'user'
                         }
                         console.log(userInfo);
                         axiosPublic.post('/users', userInfo)
@@ -59,7 +60,8 @@ const SignUp = () => {
                 console.log(result.user);
                 const userInfo = {
                     email: result.user?.email,
-                    name: result.user?.displayName
+                    name: result.user?.displayName,
+                    role: 'user'
                 }
                 axiosPublic.post('/users', userInfo)
                     .then(res => {
