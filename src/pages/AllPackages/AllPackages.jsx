@@ -1,14 +1,15 @@
 
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
 import PackageCard from "./PackageCard";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 
 const AllPackages = () => {
+    const axiosPublic = useAxiosPublic();
     const { isPending, isError, error, data: spots } = useQuery({
         queryKey: ['spots'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:8000/spots');
+            const res = await axiosPublic.get('/spots');
             return res.json();
         }
     })

@@ -28,6 +28,8 @@ const SignUp = () => {
                         const userInfo = {
                             name: data.name,
                             email: data.email,
+                            image: data.photoURL,
+                            password: data.password,
                             role: 'user'
                         }
                         console.log(userInfo);

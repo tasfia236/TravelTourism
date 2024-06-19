@@ -58,7 +58,7 @@ const Navber = () => {
                             {user && <>
                                 <li className="pl-3 font-bold text-lg">{user.displayName}</li>
                                 <li className="pl-3">{user.email}</li>
-                                <li><Link to='/dashboard/home'>Dashboard</Link></li>
+                                <li><Link to='/dashboard/profile'>Dashboard</Link></li>
 
                             </>
                             }

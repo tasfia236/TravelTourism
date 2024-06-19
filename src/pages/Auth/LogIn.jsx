@@ -6,77 +6,42 @@ import { Helmet } from "react-helmet-async";
 import { AuthContext } from "../../Providers/AuthProviders";
 import auth from "../../firebase/firebase.config";
 import authpic from "../../assets/auth/img-1.jpeg";
-import axios from "axios";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const LogIn = () => {
     const axiosPublic = useAxiosPublic();
     const googleProvider = new GoogleAuthProvider();
     const { signIn } = useContext(AuthContext);
-    const location = useLocation();
     const navigate = useNavigate();
+    const location = useLocation();
+
     const from = location.state?.from?.pathname || "/";
+  //  console.log('state in the location login page', location.state)
 
-    const handleLogIn = e => {
-        e.preventDefault();
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-        //   console.log(email, password);
 
+    const handleLogIn = event => {
+        event.preventDefault();
+        const form = event.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        console.log(email, password);
         signIn(email, password)
             .then(result => {
-                const loggedInUser = result.user;
-                console.log(loggedInUser);
-                const user = { email }
+                const user = result.user;
                 console.log(user);
-
-                axiosPublic.post('/jwt', user, { withCredentials: true })
-                    .then(res => {
-                        console.log(res.data);
-                        if (res.data.success) {
-                            Swal.fire({
-                                title: "User Logged In Successfully",
-                                icon: "success",
-                                showClass: {
-                                    popup: `
-                                animate__animated
-                                animate__fadeInUp
-                                animate__faster
-                              `
-                                },
-                                hideClass: {
-                                    popup: `
-                                animate__animated
-                                animate__fadeOutDown
-                                animate__faster
-                              `
-                                }
-                            });
-                            navigate(from, { replace: true });
-                        }
-                    })
-            })
-            .catch(error => {
                 Swal.fire({
-                    title: `error logging in, ${error.code}`,
-                    icon: "warning",
+                    title: 'Login Successful.',
                     showClass: {
-                        popup: `
-                    animate__animated
-                    animate__fadeInUp
-                    animate__faster
-                  `
+                        popup: 'animate__animated animate__fadeInDown'
                     },
                     hideClass: {
-                        popup: `
-                    animate__animated
-                    animate__fadeOutDown
-                   animate__faster
-                  `
+                        popup: 'animate__animated animate__fadeOutUp'
                     }
                 });
-            });
+                navigate(from, { replace: true });
+            })
     }
+
     const HandleGoogleSignIn = () => {
         signInWithPopup(auth, googleProvider)
             .then(result => {
