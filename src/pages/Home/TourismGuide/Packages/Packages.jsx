@@ -24,7 +24,7 @@ const Packages = () => {
 
     return (
         <div>
-            <div className="grid lg:grid-cols-3 sm:grid-cols-1 gap-y-5 m-12 gap-8">
+            <div className="grid lg:grid-cols-3 sm:grid-cols-1 gap-y-5 m-12 gap-8 ">
                 {
                     spots?.slice(0, 3).map(spot => <SinglePackage
                         key={spot._id}

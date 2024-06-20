@@ -8,8 +8,10 @@ import Home from "../pages/Home/Home";
 import AllPackages from "../pages/AllPackages/AllPackages";
 import Detalis from "../pages/PackageDeatils/Detalis";
 import Dashboard from "../Layout/Dashboard";
-import ManageUser from "../pages/Dashboard/ManageUser";
+import ManageUser from "../pages/Dashboard/Admin/ManageUser";
 import Profile from "../pages/Dashboard/Profile/Profile";
+import AddPackages from "../pages/Dashboard/Admin/AddPackages";
+import AssignedTour from "../pages/Dashboard/TourGuide/AssignedTour";
 
 const Routes = createBrowserRouter([
   {
@@ -51,12 +53,18 @@ const Routes = createBrowserRouter([
       //Admin Panel
       {
         path: 'addPackage',
-   //     element: <AddPackage></AddPackage>
+        element: <AddPackages></AddPackages>
 
       },
       {
         path: 'manageUsers',
         element: <ManageUser></ManageUser>
+      },
+
+      //Tour Guuide
+      {
+        path: 'assign',
+        element: <AssignedTour></AssignedTour>
       }
     ]
   }

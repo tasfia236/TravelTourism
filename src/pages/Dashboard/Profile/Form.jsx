@@ -1,8 +1,9 @@
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
+
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Form = ({ profile, refetch }) => {
-    const axiosSecure = useAxiosPublic();
+    const axiosSecure = useAxiosSecure();
 
     const updateProfile = e => {
         e.preventDefault();
@@ -74,7 +75,7 @@ const Form = ({ profile, refetch }) => {
                         <label className="label">
                             <span className="label-text">New Password</span>
                         </label>
-                        <input type="password" id="newpass" name="newpass" defaultValue={profile[0].password} className="w-full px-3 py-2 border rounded-md" />
+                        <input type="password" id="newpass" name="newpass" defaultValue={profile[0]?.password} className="w-full px-3 py-2 border rounded-md" />
                     </div>
                     <div className="form-control mt-6">
                         <button className="btn btn-primary">Update</button>

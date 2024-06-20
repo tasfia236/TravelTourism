@@ -54,11 +54,11 @@ const Navber = () => {
                                 </div>
                             </>
                         }
-                        <ul tabIndex={0} className="menu menu-sm fixed dropdown-content mt-1 z-[9999] p-2 shadow bg-base-100 rounded-box w-52">
+                        <ul tabIndex={0} className="menu menu-sm fixed dropdown-content mt-36 z-[9999] p-2 shadow bg-base-100 rounded-box w-52">
                             {user && <>
                                 <li className="pl-3 font-bold text-lg">{user.displayName}</li>
                                 <li className="pl-3">{user.email}</li>
-                                <li><Link to='/dashboard/profile'>Dashboard</Link></li>
+                                <li className="py-2 text-2xl font-bold"><Link to='/dashboard/profile'>Dashboard</Link></li>
 
                             </>
                             }

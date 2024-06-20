@@ -41,7 +41,7 @@ const Dashboard = () => {
                         Tour Guide Profile</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/dashboard/bookings">
+                    <NavLink to="/dashboard/assign">
                         <FaList></FaList>
                         My Assigned Tours</NavLink>
                 </li>
@@ -96,11 +96,6 @@ const Dashboard = () => {
                     <li>
                         <NavLink to="/">
                             <FaHome /> Home
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/order/salad">
-                            <FaSearch /> Menu
                         </NavLink>
                     </li>
                     <li>

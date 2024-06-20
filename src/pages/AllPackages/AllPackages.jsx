@@ -9,7 +9,7 @@ const AllPackages = () => {
     const { isPending, isError, error, data: spots } = useQuery({
         queryKey: ['spots'],
         queryFn: async () => {
-            const res = await axiosPublic.get('/spots');
+            const res = await axiosPublic.get('/allspots');
             return res.json();
         }
     })
@@ -26,7 +26,7 @@ const AllPackages = () => {
 
 
     return (
-        <div>
+        <div className="pb-12 px-2">
             <h1 className="font-black text-sky-600 text-4xl text-center pt-24 pb-12">All Packages</h1>
             <div className="grid lg:grid-cols-3 sm:grid-cols-1 gap-y-5 gap-8">
                 {

@@ -2,36 +2,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { FaTrashAlt, FaUsers } from "react-icons/fa";
 import Swal from "sweetalert2";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 
-const ManageUser = () => {
+const AssignedTour = () => {
     const axiosSecure = useAxiosSecure();
     const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const res = await axiosSecure.get('/users');
+            const res = await axiosSecure.get('/spots');
             return res.data;
         }
     })
     console.log(users);
-
-    const handleMakeAdmin = user => {
-        axiosSecure.patch(`/users/admin/${user._id}`)
-            .then(res => {
-                console.log(res.data)
-                if (res.data.modifiedCount > 0) {
-                    refetch();
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: `${user.name} is an Admin Now!`,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                }
-            })
-    }
 
     const handleMakeTourGuide = user => {
         axiosSecure.patch(`/users/tourGuide/${user._id}`)
@@ -79,7 +62,7 @@ const ManageUser = () => {
     return (
         <div>
             <div className="flex justify-evenly my-4">
-                <h2 className="text-3xl">Manage Users: {users.length}</h2>
+                <h2 className="text-3xl">Assigned Tours: {users.length}</h2>
             </div>
             <div className="overflow-x-auto">
                 <table className="table table-zebra w-full">
@@ -87,11 +70,12 @@ const ManageUser = () => {
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Admin Role</th>
-                            <th>Tour Guide Role</th>
-                            <th>Action</th>
+                            <th>Package's Name</th>
+                            <th>Tourist Name</th>
+                            <th>Tour Date</th>
+                            <th>Tour Price</th>
+                            <th>Accept</th>
+                            <th>Reject</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,14 +84,8 @@ const ManageUser = () => {
                                 <th>{index + 1}</th>
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
-                                <td>
-                                    {user.role === 'admin' ? 'Admin' : <button
-                                        onClick={() => handleMakeAdmin(user)}
-                                        className="btn btn-sm bg-blue-500">
-                                        <FaUsers className="text-white 
-                                        text-2xl"></FaUsers>
-                                    </button>}
-                                </td>
+                                <td></td>
+                                <td></td>
                                 <td>
                                     {user.role === 'tourGuide' ? 'Tour Guide' : <button
                                         onClick={() => handleMakeTourGuide(user)}
@@ -133,4 +111,4 @@ const ManageUser = () => {
     );
 };
 
-export default ManageUser;
+export default AssignedTour;

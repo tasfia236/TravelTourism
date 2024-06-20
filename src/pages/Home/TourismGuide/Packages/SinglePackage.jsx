@@ -36,8 +36,8 @@ const SinglePackage = ({ spot }) => {
     }
 
     return (
-        <div className="card w-96 bg-base-100 shadow-xl">
-            <figure className="px-10 pt-10">
+        <div className="card bg-base-100 shadow-xl">
+            <figure className="px-6 pt-10">
                 <img src={spot_image} alt="Shoes" className="rounded-xl w-[310px] h-[200px]" />
                 <div className='absolute flex gap-2 text-white px-2 py-1 -ml-60 -mt-36'>
                     {wishlist == 0 ?
