@@ -58,12 +58,12 @@ const Dashboard = () => {
                     User Profile</NavLink>
             </li>
             <li>
-                <NavLink to="/dashboard/bookings">
+                <NavLink to="/dashboard/mybooking">
                     <FaList></FaList>
                     My Bookings</NavLink>
             </li>
             <li>
-                <NavLink to="/dashboard/wishlist">
+                <NavLink to="/dashboard/mywishlist">
                     <FaHeart></FaHeart>
                     My WishList</NavLink>
             </li>

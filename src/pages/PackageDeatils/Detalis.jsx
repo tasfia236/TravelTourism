@@ -14,7 +14,7 @@ const Detalis = () => {
     const axiosPublic = useAxiosPublic();
     const { user } = useAuth();
 
-    const { images, tour_type, trip_title, price, wishlist, description, tour_plan } = spot;
+    const { images, spot_name, tour_type, trip_title, price, wishlist, description, tour_plan } = spot;
     console.log(spot);
 
     const { data: guides = [] } = useQuery({
@@ -47,7 +47,7 @@ const Detalis = () => {
             <AllGuides guides={guides}></AllGuides>
 
             <h1 className="font-black text-sky-600 text-4xl text-center pt-12">Booking Form</h1>
-            <Booking guides={guides} user={user}></Booking>
+            <Booking guides={guides} user={user} spot={spot}></Booking>
         </div>
     );
 };

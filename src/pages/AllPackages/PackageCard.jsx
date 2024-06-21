@@ -1,49 +1,47 @@
-
 import redHeart from '../../assets/icons/red_hearts.png';
 import heartOutline from '../../assets/icons/heart_outline.png';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import Swal from 'sweetalert2';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
-const PackageCard = ({ spot }) => {
-    const { _id, spot_image, tour_type, trip_title, price, wishlist } = spot;
-
+const PackageCard = ({ spot, refetch }) => {
+    const { _id, spot_image, tour_type, trip_title, price, wishlist, wish_email = [] } = spot;
     const axiosPublic = useAxiosPublic();
-    const [added, setAdded] = useState([]);
+    const { user } = useAuth();
 
     const wishlistChange = id => {
+        const isAlreadyInWishlist = wish_email.includes(user.email);
+        const newWishValue = isAlreadyInWishlist ? 0 : 1;
+
         axiosPublic.patch(`/wishspots/${id}`, {
-            wish: 1
+            wish: newWishValue,
+            wish_email: user.email
         })
-            .then(data => {
-                console.log(data);
-                if (data.modifiedCount > 0) {
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'Successfully Available',
-                        icon: 'success',
-                        confirmButtonText: 'Ok'
-                    })
-                    // update state
-                    const remaining = added.filter(added => added._id !== id);
-                    const updated = added.find(added => added._id === id);
-                    updated.wish = 1
-                    const addWish = [updated, ...remaining];
-                    setAdded(addWish);
-                }
-            })
-    }
+        .then(res => {
+            if (res.data.modifiedCount > 0) {
+                refetch();
+                Swal.fire({
+                    title: 'Success',
+                    text: isAlreadyInWishlist ? 'Removed from Wishlist' : 'Added to Wishlist',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                });
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    };
 
     return (
         <div className="card w-96 bg-base-100 shadow-xl">
             <figure className="px-10 pt-10">
-                <img src={spot_image} alt="Shoes" className="rounded-xl w-[310px] h-[200px]" />
+                <img src={spot_image} alt="Spot" className="rounded-xl w-[310px] h-[200px]" />
                 <div className='absolute flex gap-2 text-white px-2 py-1 -ml-60 -mt-36'>
-                    {wishlist == 0 ?
-                        <button onClick={() =>  wishlistChange(_id)}><img src={heartOutline} className='h-6 w-6' alt="" /></button>
-                        : <img src={redHeart} className='h-6 w-6' alt="" />
-                    }
+                    <button onClick={() => wishlistChange(_id)}>
+                        <img src={wish_email.includes(user?.email) ? redHeart : heartOutline} className='h-6 w-6' alt="" />
+                    </button>
                 </div>
             </figure >
             <div className="card-body items-center text-center">

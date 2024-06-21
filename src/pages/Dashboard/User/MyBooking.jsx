@@ -1,66 +1,35 @@
 
-import { useQuery } from "@tanstack/react-query";
-import { FaCheck } from "react-icons/fa";
-import Swal from "sweetalert2";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import useAuth from "../../../hooks/useAuth";
-import { RxCross2 } from "react-icons/rx";
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import useAuth from '../../../hooks/useAuth';
+import { useQuery } from '@tanstack/react-query';
+import { FaCheck, FaMoneyBill } from 'react-icons/fa';
+import { RxCross2 } from 'react-icons/rx';
+import { FaMoneyBill1 } from 'react-icons/fa6';
+import { TbZoomMoney } from 'react-icons/tb';
 
+const MyBooking = () => {
 
-const AssignedTour = () => {
     const axiosSecure = useAxiosSecure();
     const { user, loading } = useAuth();
-    const { data: users = [], refetch } = useQuery({
+    console.log(user.email)
+    const { data: users = [] } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/assigned?email=${user.email}`);
+            const res = await axiosSecure.get(`/mybooking/${user.email}`);
             return res.data;
         }
     })
     console.log(users);
 
-    const handleAccept = user => {
-        axiosSecure.patch(`/users/bookingAccept/${user._id}`)
-            .then(res => {
-                console.log(res.data)
-                if (res.data.modifiedCount > 0) {
-                    refetch();
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: `${user.tourist_name} is Accepted!`,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                }
-            })
-    }
-
-    const handleReject = user => {
-        axiosSecure.patch(`/users/bookingReject/${user._id}`)
-            .then(res => {
-                console.log(res.data)
-                if (res.data.modifiedCount > 0) {
-                    refetch();
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: `${user.tourist_name} is Rejected!`,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                }
-            })
-    }
-
     if (loading) {
         return <span className="loading loading-infinity loading-lg"></span>
     }
 
+
     return (
         <div>
-            <div className="flex justify-evenly my-4">
-                <h2 className="text-3xl">Assigned Tours: {users.length}</h2>
+            <div className="container flex justify-evenly my-4">
+                <h2 className="text-3xl font-bold mb-4 text-center py-5">My Booking: {users.length}</h2>
             </div>
             <div className="overflow-x-auto">
                 <table className="table table-zebra w-full">
@@ -69,11 +38,12 @@ const AssignedTour = () => {
                         <tr>
                             <th></th>
                             <th>Package's Name</th>
-                            <th>Tourist Name</th>
+                            <th>Tour Guide Name</th>
                             <th>Tour Date</th>
                             <th>Tour Price</th>
-                            <th>Accept</th>
-                            <th>Reject</th>
+                            <th>Status</th>
+                            <th>Pay</th>
+                            <th>Cancel</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -81,7 +51,7 @@ const AssignedTour = () => {
                             users.map((user, index) => <tr key={user._id}>
                                 <th>{index + 1}</th>
                                 <td>{user.package_name}</td>
-                                <td>{user.tourist_name}</td>
+                                <td>{user.guide_name}</td>
                                 <td>{user.date}</td>
                                 <td>${user.price}</td>
                                 <td>
@@ -91,6 +61,14 @@ const AssignedTour = () => {
                                         <FaCheck className="text-white 
                                         text-2xl"></FaCheck>
                                     </button>}
+                                </td>
+                                <td>
+                                    {user.accept === 'yes' && <button
+                                        className='btn btn-sm bg-green-400'>
+                                        <TbZoomMoney className="text-white 
+                                        text-2xl"></TbZoomMoney>
+                                    </button>
+                                    }
                                 </td>
                                 <td>
                                     {user.accept === 'reject' ? 'Rejected' : <button
@@ -110,4 +88,4 @@ const AssignedTour = () => {
     );
 };
 
-export default AssignedTour;
+export default MyBooking;

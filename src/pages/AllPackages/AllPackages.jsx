@@ -6,11 +6,11 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const AllPackages = () => {
     const axiosPublic = useAxiosPublic();
-    const { isPending, isError, error, data: spots } = useQuery({
+    const { isPending, isError, error, data: spots, refetch } = useQuery({
         queryKey: ['spots'],
         queryFn: async () => {
             const res = await axiosPublic.get('/allspots');
-            return res.json();
+            return res.data;
         }
     })
     console.log(spots);
@@ -33,6 +33,7 @@ const AllPackages = () => {
                     spots?.map(spot => <PackageCard
                         key={spot._id}
                         spot={spot}
+                        refetch={refetch}
                     ></PackageCard>)
                 }
             </div>

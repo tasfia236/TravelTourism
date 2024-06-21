@@ -12,6 +12,10 @@ import ManageUser from "../pages/Dashboard/Admin/ManageUser";
 import Profile from "../pages/Dashboard/Profile/Profile";
 import AddPackages from "../pages/Dashboard/Admin/AddPackages";
 import AssignedTour from "../pages/Dashboard/TourGuide/AssignedTour";
+import ProtectedRoute from "./ProtectedRoute";
+import MyBooking from "../pages/Dashboard/User/MyBooking";
+import MyWishlist from "../pages/Dashboard/User/MyWishlist";
+import RequestToAdmin from "../pages/Dashboard/User/RequestToAdmin";
 
 const Routes = createBrowserRouter([
   {
@@ -53,18 +57,32 @@ const Routes = createBrowserRouter([
       //Admin Panel
       {
         path: 'addPackage',
-        element: <AddPackages></AddPackages>
+        element: <ProtectedRoute><AddPackages></AddPackages></ProtectedRoute>
 
       },
       {
         path: 'manageUsers',
-        element: <ManageUser></ManageUser>
+        element: <ProtectedRoute><ManageUser></ManageUser></ProtectedRoute>
       },
 
-      //Tour Guuide
+      //Tour Guuide Panel
       {
         path: 'assign',
-        element: <AssignedTour></AssignedTour>
+        element: <ProtectedRoute><AssignedTour></AssignedTour></ProtectedRoute>
+      },
+
+      //User Panel
+      {
+        path: 'mybooking',
+        element: <ProtectedRoute><MyBooking></MyBooking></ProtectedRoute>
+      },
+      {
+        path: 'mywishlist',
+        element: <ProtectedRoute><MyWishlist></MyWishlist></ProtectedRoute>
+      },
+      {
+        path:  'requestAdmin',
+        element: <ProtectedRoute><RequestToAdmin></RequestToAdmin></ProtectedRoute>
       }
     ]
   }
