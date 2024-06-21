@@ -2,9 +2,8 @@
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useAuth from '../../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
-import { FaCheck, FaMoneyBill } from 'react-icons/fa';
+import { FaCheck } from 'react-icons/fa';
 import { RxCross2 } from 'react-icons/rx';
-import { FaMoneyBill1 } from 'react-icons/fa6';
 import { TbZoomMoney } from 'react-icons/tb';
 
 const MyBooking = () => {

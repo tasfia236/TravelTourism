@@ -18,13 +18,13 @@ const RequestToAdmin = () => {
             .then(res => {
                 console.log(res.data);
                 if (res.data.insertedId) {
-                    setRequested(true);
                     Swal.fire({
                         title: 'Success!',
                         text: 'Your request has been sent to the admin.',
                         icon: 'success',
                         confirmButtonText: 'Ok'
                     });
+                    setRequested(true);
                 }
             })
             .catch(error => {
