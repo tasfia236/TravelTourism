@@ -19,13 +19,14 @@ import hiking from '../../../assets/tpes/hiking.jpeg';
 import air from '../../../assets/tpes/air rides.jpeg';
 import historical from '../../../assets/tpes/historical.jpeg';
 import wildlife from '../../../assets/tpes/wildlife.jpeg';
+import { Link } from 'react-router-dom';
 
 const TourType = () => {
     return (
         <div className='mx-auto m-5 text-center'>
-            <h1 className="font-black text-sky-600 text-4xl py-10"> Tour Type </h1>
+            <h1 className="font-black text-sky-600 text-2xl lg:text-4xl py-10"> Tour Type </h1>
             <Swiper
-                slidesPerView={5}
+                slidesPerView={3}
                 spaceBetween={30}
                 freeMode={true}
                 pagination={{
@@ -36,31 +37,31 @@ const TourType = () => {
             >
                 <SwiperSlide>
                 <h1 className='absolute'>Sports</h1>
-                    <img src={sports} alt="" />
+                    <Link to='/tourtype/sports'><img src={sports} alt="" /></Link>
                 </SwiperSlide>
                 <SwiperSlide>
                     <h1 className='absolute'>WildLife</h1>
-                    <img src={wildlife} alt="" />
+                    <Link to='/tourtype/wildlife'><img src={wildlife} alt="" /></Link>
                 </SwiperSlide>
                 <SwiperSlide>
                     <h1 className='absolute'>Hiking</h1>
-                    <img src={hiking} alt="" />
+                    <Link to='/tourtype/hiking'><img src={hiking} alt="" /></Link>
                 </SwiperSlide>
                 <SwiperSlide>
                     <h1 className='absolute'>Walking</h1>
-                    <img src={walking} alt="" />
+                    <Link to='/tourtype/walking'><img src={walking} alt="" /></Link>
                 </SwiperSlide>
                 <SwiperSlide>
                     <h1 className='absolute'>Air Rides</h1>
-                    <img src={air} alt="" />
+                    <Link to='/tourtype/air'><img src={air} alt="" /></Link>
                 </SwiperSlide>
                 <SwiperSlide>
                     <h1 className='absolute'>Desert</h1>
-                    <img src={desert} alt="" />
+                    <Link to='/tourtype/desert'><img src={desert} alt="" /></Link>
                 </SwiperSlide>
                 <SwiperSlide>
                     <h1 className='absolute'>Historical</h1>
-                    <img src={historical} alt="" />
+                    <Link to='/tourtype/historical'><img src={historical} alt="" /></Link>
                 </SwiperSlide>
             </Swiper>
         </div>

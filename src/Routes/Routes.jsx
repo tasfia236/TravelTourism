@@ -19,6 +19,7 @@ import RequestToAdmin from "../pages/Dashboard/User/RequestToAdmin";
 import AllStories from "../pages/Home/TouristStories/AllStory/AllStories";
 import StoryDetail from "../pages/Home/TouristStories/StoriesDetails/StoryDetail";
 import GuideDetails from "../pages/Home/TourismGuide/MeetGuides/GuideDetails";
+import TypePackages from "../pages/Home/TourType/TypePackages";
 
 const Routes = createBrowserRouter([
   {
@@ -59,6 +60,11 @@ const Routes = createBrowserRouter([
         path: "/guideDetails/:id",
         element:<GuideDetails></GuideDetails>,
         loader: ({ params }) => fetch(`http://localhost:8000/guidedetails/${params.id}`)
+      },
+      {
+        path: "tourtype/:id",
+        element: <TypePackages></TypePackages>,
+        loader: ({params}) => fetch(`http://localhost:8000/tourtype/${params.id}`)
       }
     ]
   },

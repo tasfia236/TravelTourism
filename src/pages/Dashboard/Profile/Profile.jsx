@@ -24,7 +24,7 @@ const Profile = () => {
     return (
         <div className="p-8">
             <h1 className="text-center text-3xl font-black text-blue-800">My Profile</h1>
-            <div className=" flex justify-evenly gap-10 px-16 pr-24 py-12 w-full">
+            <div className=" flex flex-col mx-auto lg:flex-row justify-evenly gap-10 px-16 sm:pl-32 py-12 w-full">
                 <div className=" w-48 mx-12">
                     <img src={profile[0]?.image} className=" rounded-btn" alt="" />
                 </div>
