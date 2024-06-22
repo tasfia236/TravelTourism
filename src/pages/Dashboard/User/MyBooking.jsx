@@ -1,11 +1,12 @@
 
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useAuth from '../../../hooks/useAuth';
-import { useQuery} from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { FaCheck } from 'react-icons/fa';
 import { RxCross2 } from 'react-icons/rx';
 import { TbZoomMoney } from 'react-icons/tb';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 const MyBooking = () => {
 
@@ -16,10 +17,10 @@ const MyBooking = () => {
 
 
     console.log(user.email)
-    const { data: users = [] } = useQuery({
+    const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/mybooking/${user.email}`);
+            const res = await axiosSecure.get(`/booking/${user.email}`);
             return res.data;
         }
     })
@@ -27,16 +28,6 @@ const MyBooking = () => {
 
     if (loading) {
         return <span className="loading loading-infinity loading-lg"></span>
-    }
-
-    const handleAccept = () => {
-
-    }
-
-    const handleReject = ()
-
-    const handleCancelBooking = () => {
-
     }
 
     // Calculate pagination
@@ -83,32 +74,14 @@ const MyBooking = () => {
                                 <td>${booking.price}</td>
                                 <td>{booking.status}</td>
                                 <td>
-                                    {booking.status === 'In Review' && (
-                                        <button
-                                            onClick={() => handleReject(booking.id)}
-                                            className="btn btn-sm bg-red-500 mr-2"
-                                        >
-                                            <RxCross2 className="text-white text-2xl" />
-                                        </button>
-                                    )}
-                                    {booking.status === 'In Review' && (
-                                        <button
-                                            onClick={() => handleAccept(booking.id)}
-                                            className="btn btn-sm bg-blue-500"
-                                        >
-                                            <FaCheck className="text-white text-2xl" />
-                                        </button>
-                                    )}
+
                                     {booking.status === 'Accepted' && (
-                                        <button className="btn btn-sm bg-green-400">
-                                            <TbZoomMoney className="text-white text-2xl" />
+                                        <button className="btn text-white btn-sm bg-green-400">
+                                            Pay
                                         </button>
                                     )}
                                     {booking.status === 'In Review' && (
-                                        <button
-                                            onClick={() => handleCancelBooking(booking.id)}
-                                            className="btn btn-sm bg-red-500"
-                                        >
+                                        <button className="btn text-white btn-sm bg-red-500">
                                             Cancel
                                         </button>
                                     )}
