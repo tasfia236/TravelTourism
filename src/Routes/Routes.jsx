@@ -16,6 +16,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import MyBooking from "../pages/Dashboard/User/MyBooking";
 import MyWishlist from "../pages/Dashboard/User/MyWishlist";
 import RequestToAdmin from "../pages/Dashboard/User/RequestToAdmin";
+import AllStories from "../pages/Home/TouristStories/AllStory/AllStories";
+import StoryDetail from "../pages/Home/TouristStories/StoriesDetails/StoryDetail";
 
 const Routes = createBrowserRouter([
   {
@@ -42,6 +44,15 @@ const Routes = createBrowserRouter([
         path: 'details/:id',
         element: <Detalis></Detalis>,
         loader: ({ params }) => fetch(`http://localhost:8000/spots/${params.id}`)
+      },
+      {
+        path: "/all-stories",
+        element: <AllStories></AllStories>
+      },
+      {
+        path: "/story/:id",
+        element: <StoryDetail></StoryDetail>,
+        loader: ({ params }) => fetch(`http://localhost:8000/story/${params.id}`)
       }
     ]
   },

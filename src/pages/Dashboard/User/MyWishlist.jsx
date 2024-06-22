@@ -8,19 +8,30 @@ const MyWishlist = () => {
     const axiosPublic = useAxiosPublic();
     const { user } = useAuth();
     const [wishlistItems, setWishlistItems] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // Number of bookings to display per page
 
     useEffect(() => {
         fetchWishlist();
     }, []);
 
-    const fetchWishlist = () => {
-        const response = axiosPublic.get(`/wishlist/${user.email}`);
-        setWishlistItems(response.data);
-
+    const fetchWishlist = async () => {
+        try {
+            const response = await axiosPublic.get(`/wishlist/${user.email}`);
+            setWishlistItems(response.data);
+        } catch (error) {
+            console.error('Error fetching wishlist:', error);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Failed to fetch wishlist items. Please try again later.',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        }
     };
 
     const handleDelete = id => {
-        const response = axiosPublic.delete(`/wishlist/${id}`);
+        const response = axiosPublic.delete(`/wish/${id}`);
         if (response.data.deletedCount > 0) {
             Swal.fire({
                 title: 'Deleted!',
@@ -39,6 +50,21 @@ const MyWishlist = () => {
         }
     };
 
+        // Calculate pagination
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const currentWishLists = wishlistItems.slice(startIndex, endIndex);
+
+        const totalPages = Math.ceil(wishlistItems.length / itemsPerPage);
+    
+        const getPageNumbers = () => {
+            const pageNumbers = [];
+            for (let i = 1; i <= totalPages; i++) {
+                pageNumbers.push(i);
+            }
+            return pageNumbers;
+        };
+
     return (
         <div className="container mx-auto mt-8">
             <h1 className="text-3xl font-bold mb-4 text-center py-5">My Wishlist</h1>
@@ -52,7 +78,7 @@ const MyWishlist = () => {
                     </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
-                    {wishlistItems.map(item => (
+                    {currentWishLists?.map(item => (
                         <tr key={item._id}>
                             <td className="py-3 px-6 text-left whitespace-nowrap">{item.trip_title}</td>
                             <td className="py-3 px-6 text-left">{item.tour_type}</td>
@@ -67,6 +93,19 @@ const MyWishlist = () => {
                     ))}
                 </tbody>
             </table>
+            {/* Pagination controls */}
+            <div className="pagination">
+                {getPageNumbers().map((number) => (
+                    <button
+                        key={number}
+                        className={`pagination-button ${currentPage === number ? 'active' : ''}`}
+                        onClick={() => setCurrentPage(number)}
+                    >
+                        {number}
+                    </button>
+                ))}
+
+            </div>
         </div>
     );
 };

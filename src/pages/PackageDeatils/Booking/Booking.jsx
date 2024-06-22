@@ -1,10 +1,11 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { useNavigate } from "react-router-dom";
+import Confetti from 'react-confetti';
 
 const Booking = ({ guides, user, spot }) => {
 
@@ -14,6 +15,16 @@ const Booking = ({ guides, user, spot }) => {
   //  console.log(spot);
     const navigate = useNavigate();
     const axiosPublic = useAxiosPublic();
+    const [bookingCount, setBookingCount] = useState(0);
+    const [showCongratulations, setShowCongratulations] = useState(false);
+
+
+    useEffect(() => {
+        if (bookingCount > 3) {
+            setShowCongratulations(true);
+        }
+    }, [bookingCount]);
+
 
     const handleBooking = async (e) => {
         e.preventDefault();
@@ -49,6 +60,7 @@ const Booking = ({ guides, user, spot }) => {
             .then(res => {
                 console.log(res.data);
                 if (res.data.insertedId) {
+                    setBookingCount((prevCount) => prevCount + 1);
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
@@ -109,6 +121,18 @@ const Booking = ({ guides, user, spot }) => {
                             
                         </div>
                     </form>
+                    {showCongratulations && (
+                        <div className="flex items-center justify-center mt-4">
+                            <Confetti />
+                            <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 w-full max-w-sm mx-auto">
+                                <p className="font-bold">Congratulations!</p>
+                                <p>You've booked more than 3 times. You qualify for a discount.</p>
+                                <button className="mt-2 bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded focus:outline-none">
+                                    Apply Discount
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

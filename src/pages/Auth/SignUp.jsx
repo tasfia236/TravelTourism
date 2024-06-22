@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Providers/AuthProviders";
@@ -30,7 +30,12 @@ const SignUp = () => {
                             email: data.email,
                             image: data.photoURL,
                             password: data.password,
-                            role: 'user'
+                            number: data.number,
+                            education: data.education,
+                            skill: data.skill,
+                            work: data.work,
+                            role: 'user',
+                            
                         }
                         console.log(userInfo);
                         axiosPublic.post('/users', userInfo)
@@ -109,7 +114,7 @@ const SignUp = () => {
                     </div>
                     <div className="card lg:card-side shadow-2xl bg-base-100">
                         <div className="lg:w-[52%] lg:h-[60%]">
-                            <img className="w-full h-96 lg:h-[480px]" src={authpic} alt="" />
+                            <img className="w-full h-96 lg:h-full lg:pt-72" src={authpic} alt="" />
                         </div>
                         <form onSubmit={handleSubmit(onSubmit)} className="card-body">
                             <div className="form-control">
@@ -132,6 +137,34 @@ const SignUp = () => {
                                 </label>
                                 <input type="email"  {...register("email", { required: true })} name="email" placeholder="email" className="input input-bordered" />
                                 {errors.email && <span className="text-red-600">Email is required</span>}
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Number</span>
+                                </label>
+                                <input type="text"  {...register("number", { required: true })} name="number" placeholder="number" className="input input-bordered" />
+                                {errors.number && <span className="text-red-600">number is required</span>}
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Education</span>
+                                </label>
+                                <input type="text"  {...register("education", { required: true })} name="education" placeholder="number" className="input input-bordered" />
+                                {errors.education && <span className="text-red-600">education is required</span>}
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Skills</span>
+                                </label>
+                                <input type="text"  {...register("skill", { required: true })} name="skill" placeholder="number" className="input input-bordered" />
+                                {errors.skill && <span className="text-red-600">skill is required</span>}
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Work Experience</span>
+                                </label>
+                                <input type="text"  {...register("work", { required: true })} name="work" placeholder="number" className="input input-bordered" />
+                                {errors.work && <span className="text-red-600">work is required</span>}
                             </div>
                             <div className="form-control">
                                 <label className="label">

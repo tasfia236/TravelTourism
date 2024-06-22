@@ -5,11 +5,16 @@ import { useQuery } from '@tanstack/react-query';
 import { FaCheck } from 'react-icons/fa';
 import { RxCross2 } from 'react-icons/rx';
 import { TbZoomMoney } from 'react-icons/tb';
+import { useState } from 'react';
 
 const MyBooking = () => {
 
     const axiosSecure = useAxiosSecure();
     const { user, loading } = useAuth();
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // Number of bookings to display per page
+
+
     console.log(user.email)
     const { data: users = [] } = useQuery({
         queryKey: ['users'],
@@ -24,6 +29,20 @@ const MyBooking = () => {
         return <span className="loading loading-infinity loading-lg"></span>
     }
 
+    // Calculate pagination
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentBookings = users.slice(startIndex, endIndex);
+
+    const totalPages = Math.ceil(users.length / itemsPerPage);
+
+    const getPageNumbers = () => {
+        const pageNumbers = [];
+        for (let i = 1; i <= totalPages; i++) {
+            pageNumbers.push(i);
+        }
+        return pageNumbers;
+    };
 
     return (
         <div>
@@ -47,7 +66,7 @@ const MyBooking = () => {
                     </thead>
                     <tbody>
                         {
-                            users.map((user, index) => <tr key={user._id}>
+                            currentBookings.map((user, index) => <tr key={user._id}>
                                 <th>{index + 1}</th>
                                 <td>{user.package_name}</td>
                                 <td>{user.guide_name}</td>
@@ -83,7 +102,20 @@ const MyBooking = () => {
                     </tbody>
                 </table>
             </div>
-        </div>
+            {/* Pagination controls */}
+            <div className="pagination">
+                {getPageNumbers().map((number) => (
+                    <button
+                        key={number}
+                        className={`pagination-button ${currentPage === number ? 'active' : ''}`}
+                        onClick={() => setCurrentPage(number)}
+                    >
+                        {number}
+                    </button>
+                ))}
+
+            </div>
+        </div >
     );
 };
 
