@@ -5,11 +5,16 @@ import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import { RxCross2 } from "react-icons/rx";
+import { useState } from "react";
 
 
 const AssignedTour = () => {
     const axiosSecure = useAxiosSecure();
     const { user, loading } = useAuth();
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // Number of bookings to display per page
+
+
     const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
@@ -57,6 +62,22 @@ const AssignedTour = () => {
         return <span className="loading loading-infinity loading-lg"></span>
     }
 
+    // Calculate pagination
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentBookings = users.slice(startIndex, endIndex);
+
+    const totalPages = Math.ceil(users.length / itemsPerPage);
+
+    const getPageNumbers = () => {
+        const pageNumbers = [];
+        for (let i = 1; i <= totalPages; i++) {
+            pageNumbers.push(i);
+        }
+        return pageNumbers;
+    };
+
+
     return (
         <div>
             <div className="flex justify-evenly my-4">
@@ -78,14 +99,14 @@ const AssignedTour = () => {
                     </thead>
                     <tbody>
                         {
-                            users.map((user, index) => <tr key={user._id}>
+                            currentBookings.map((user, index) => <tr key={user._id}>
                                 <th>{index + 1}</th>
                                 <td>{user.package_name}</td>
                                 <td>{user.tourist_name}</td>
                                 <td>{user.date}</td>
                                 <td>${user.price}</td>
                                 <td>
-                                    {user.accept === 'yes' ? 'Accepted' : <button
+                                    {user.status === 'Accepted' ? 'Accepted' : <button
                                         onClick={() => handleAccept(user)}
                                         className="btn btn-sm bg-blue-500">
                                         <FaCheck className="text-white 
@@ -93,7 +114,7 @@ const AssignedTour = () => {
                                     </button>}
                                 </td>
                                 <td>
-                                    {user.accept === 'reject' ? 'Rejected' : <button
+                                    {user.status === 'Rejected' ? 'Rejected' : <button
                                         onClick={() => handleReject(user)}
                                         className="btn btn-sm bg-red-500">
                                         <RxCross2 className="text-white 
@@ -105,6 +126,19 @@ const AssignedTour = () => {
 
                     </tbody>
                 </table>
+            </div>
+            {/* Pagination controls */}
+            <div className="pagination">
+                {getPageNumbers().map((number) => (
+                    <button
+                        key={number}
+                        className={`pagination-button ${currentPage === number ? 'active' : ''}`}
+                        onClick={() => setCurrentPage(number)}
+                    >
+                        {number}
+                    </button>
+                ))}
+
             </div>
         </div>
     );

@@ -4,15 +4,15 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Confetti from 'react-confetti';
 
 const Booking = ({ guides, user, spot }) => {
 
-    
+
     const [startDate, setStartDate] = useState(new Date());
-   // console.log(user);
-  //  console.log(spot);
+    // console.log(user);
+    //  console.log(spot);
     const navigate = useNavigate();
     const axiosPublic = useAxiosPublic();
     const [bookingCount, setBookingCount] = useState(0);
@@ -41,7 +41,7 @@ const Booking = ({ guides, user, spot }) => {
         const price = form.price.value;
         const date = form.date.value;
         const guide_data = JSON.parse(form.guide.value);
-        const accept = 'no';
+        const status = 'In Review';
         const package_name = spot.trip_title;
 
         const BookTour = {
@@ -53,7 +53,7 @@ const Booking = ({ guides, user, spot }) => {
             date,
             guide_name: guide_data.name, // Storing guide's name
             email: guide_data.email, // Storing guide's email
-            accept
+            status
         };
 
         axiosPublic.post('/booking', BookTour)
@@ -61,13 +61,6 @@ const Booking = ({ guides, user, spot }) => {
                 console.log(res.data);
                 if (res.data.insertedId) {
                     setBookingCount((prevCount) => prevCount + 1);
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Confirm Your Booking!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
                     form.reset();
                 }
             })
@@ -117,8 +110,7 @@ const Booking = ({ guides, user, spot }) => {
                             </div>
                         </div>
                         <div className="form-control mt-6">
-                                <button type="submit" className="btn btn-primary">Book Now!</button>
-                            
+                            <button onClick={()=>document.getElementById('my_modal_5').showModal()}  type="submit" className="btn btn-primary">Book Now!</button>
                         </div>
                     </form>
                     {showCongratulations && (
@@ -135,6 +127,18 @@ const Booking = ({ guides, user, spot }) => {
                     )}
                 </div>
             </div>
+            <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+                <div className="modal-box">
+                    <h3 className="font-bold text-lg">Confirm Your!</h3>
+                    <Link to='/dashboard/mybooking'><button className="btn btn-accent">My Booking Page</button></Link>
+                    <div className="modal-action">
+                        <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */}
+                            <button className="btn">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
         </div>
     );
 };

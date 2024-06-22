@@ -1,7 +1,7 @@
 
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useAuth from '../../../hooks/useAuth';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery} from '@tanstack/react-query';
 import { FaCheck } from 'react-icons/fa';
 import { RxCross2 } from 'react-icons/rx';
 import { TbZoomMoney } from 'react-icons/tb';
@@ -27,6 +27,16 @@ const MyBooking = () => {
 
     if (loading) {
         return <span className="loading loading-infinity loading-lg"></span>
+    }
+
+    const handleAccept = () => {
+
+    }
+
+    const handleReject = ()
+
+    const handleCancelBooking = () => {
+
     }
 
     // Calculate pagination
@@ -60,41 +70,48 @@ const MyBooking = () => {
                             <th>Tour Date</th>
                             <th>Tour Price</th>
                             <th>Status</th>
-                            <th>Pay</th>
-                            <th>Cancel</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            currentBookings.map((user, index) => <tr key={user._id}>
+                            currentBookings.map((booking, index) => <tr key={user._id}>
                                 <th>{index + 1}</th>
-                                <td>{user.package_name}</td>
-                                <td>{user.guide_name}</td>
-                                <td>{user.date}</td>
-                                <td>${user.price}</td>
+                                <td>{booking.package_name}</td>
+                                <td>{booking.guide_name}</td>
+                                <td>{booking.date}</td>
+                                <td>${booking.price}</td>
+                                <td>{booking.status}</td>
                                 <td>
-                                    {user.accept === 'yes' ? 'Accepted' : <button
-                                        onClick={() => handleAccept(user)}
-                                        className="btn btn-sm bg-blue-500">
-                                        <FaCheck className="text-white 
-                                        text-2xl"></FaCheck>
-                                    </button>}
-                                </td>
-                                <td>
-                                    {user.accept === 'yes' && <button
-                                        className='btn btn-sm bg-green-400'>
-                                        <TbZoomMoney className="text-white 
-                                        text-2xl"></TbZoomMoney>
-                                    </button>
-                                    }
-                                </td>
-                                <td>
-                                    {user.accept === 'reject' ? 'Rejected' : <button
-                                        onClick={() => handleReject(user)}
-                                        className="btn btn-sm bg-red-500">
-                                        <RxCross2 className="text-white 
-                                        text-2xl"></RxCross2>
-                                    </button>}
+                                    {booking.status === 'In Review' && (
+                                        <button
+                                            onClick={() => handleReject(booking.id)}
+                                            className="btn btn-sm bg-red-500 mr-2"
+                                        >
+                                            <RxCross2 className="text-white text-2xl" />
+                                        </button>
+                                    )}
+                                    {booking.status === 'In Review' && (
+                                        <button
+                                            onClick={() => handleAccept(booking.id)}
+                                            className="btn btn-sm bg-blue-500"
+                                        >
+                                            <FaCheck className="text-white text-2xl" />
+                                        </button>
+                                    )}
+                                    {booking.status === 'Accepted' && (
+                                        <button className="btn btn-sm bg-green-400">
+                                            <TbZoomMoney className="text-white text-2xl" />
+                                        </button>
+                                    )}
+                                    {booking.status === 'In Review' && (
+                                        <button
+                                            onClick={() => handleCancelBooking(booking.id)}
+                                            className="btn btn-sm bg-red-500"
+                                        >
+                                            Cancel
+                                        </button>
+                                    )}
                                 </td>
                             </tr>)
                         }
