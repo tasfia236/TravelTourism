@@ -4,7 +4,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Form from "./Form";
 import useTourGuide from "../../../hooks/useTourGuide";
 
-const Profile = ({}) => {
+const Profile = () => {
 
     const [isTourGuide] = useTourGuide();
 
