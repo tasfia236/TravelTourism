@@ -3,9 +3,14 @@ import Swal from 'sweetalert2';
 import { FaTrashAlt, FaUsers } from 'react-icons/fa';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { useState } from 'react';
+import Select from 'react-select';
 
 const ManageUser = () => {
     const axiosSecure = useAxiosSecure();
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedRole, setSelectedRole] = useState(null); // State for selected role filter
+
 
     const { data: users = [], refetch: refetchUsers } = useQuery({
         queryKey: ['users'],
@@ -96,10 +101,53 @@ const ManageUser = () => {
         });
     };
 
+    // Filter users by role
+    const filteredUsers = users.filter((user) => {
+        if (!selectedRole) return true; // Return true for all if no role is selected
+        return user.role?.toLowerCase() === selectedRole.value.toLowerCase();
+    });
+
+    // Filter users by search term (name or email)
+    const searchedUsers = filteredUsers.filter((user) => {
+        const searchTermLower = searchTerm.toLowerCase();
+        return (
+            user.name?.toLowerCase().includes(searchTermLower) ||
+            user.email?.toLowerCase().includes(searchTermLower)
+        );
+    });
+
+    // Options for role filter dropdown
+    const roleOptions = [
+        { value: 'admin', label: 'Admin' },
+        { value: 'tourGuide', label: 'Tour Guide' },
+        { value: 'user', label: 'User' }
+    ];
+
     return (
         <div>
             <div className="flex justify-evenly my-4">
                 <h2 className="text-3xl">Manage Users: {users.length}</h2>
+            </div>
+            <div className="flex justify-between items-center mb-4">
+                {/* Search input */}
+                <input
+                    type="text"
+                    placeholder="Search by Name or Email"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 w-96"
+                />
+
+                {/* Role filter dropdown */}
+                <Select
+                    className="w-64"
+                    placeholder="Filter by Role"
+                    options={roleOptions}
+                    onChange={(selectedOption) =>
+                        setSelectedRole(selectedOption)
+                    }
+                    value={selectedRole}
+                />
             </div>
             <div className="overflow-x-auto">
                 <table className="table table-zebra w-full">
@@ -114,7 +162,7 @@ const ManageUser = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user, index) => (
+                        {searchedUsers.map((user, index) => (
                             <tr key={user._id}>
                                 <th>{index + 1}</th>
                                 <td>{user.name}</td>

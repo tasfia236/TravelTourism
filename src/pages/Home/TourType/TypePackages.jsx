@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Link, useLoaderData } from 'react-router-dom';
 import SingleTypePackage from './SingleTypePackage';
 

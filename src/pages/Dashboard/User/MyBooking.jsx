@@ -2,9 +2,6 @@
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useAuth from '../../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
-import { FaCheck } from 'react-icons/fa';
-import { RxCross2 } from 'react-icons/rx';
-import { TbZoomMoney } from 'react-icons/tb';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 
@@ -29,6 +26,22 @@ const MyBooking = () => {
     if (loading) {
         return <span className="loading loading-infinity loading-lg"></span>
     }
+
+    const handleCancel = (booking) => {
+        axiosSecure.delete(`/booking/cancel/${booking._id}`)
+            .then(res => {
+                if (res.data.deletedCount > 0) {
+                    refetch();
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: `Booking for ${booking.package_name} is Cancelled!`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+    };
 
     // Calculate pagination
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -81,7 +94,7 @@ const MyBooking = () => {
                                         </button>
                                     )}
                                     {booking.status === 'In Review' && (
-                                        <button className="btn text-white btn-sm bg-red-500">
+                                        <button onClick={() => handleCancel(booking)} className="btn text-white btn-sm bg-red-500">
                                             Cancel
                                         </button>
                                     )}
