@@ -21,7 +21,7 @@
 HTML, CSS, TailwindCSS, MongoDB, Firebase, React route
 
 <strong> * How to Clone and Run a Project Locally </strong>
-step 1: git clone https://github.com/username/projectname.git
-step 2: npm install
-step 3: Create and edit the .env file as needed.
-step 4: npm run dev
+* step 1: git clone https://github.com/username/projectname.git
+* step 2: npm install
+* step 3: Create and edit the .env file as needed.
+* step 4: npm run dev
