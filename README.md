@@ -18,7 +18,7 @@
 * Save your favorite tour packages to your wishlist and share the travel stories on social media platforms
 
 <strong> * Technologies: </strong>
-HTML, CSS, TailwindCSS, MongoDB, Firebase, React route
+<strong> HTML, CSS, TailwindCSS, MongoDB, Firebase, React route </strong>
 
 <strong> * How to Clone and Run a Project Locally </strong>
 * step 1: git clone https://github.com/username/projectname.git
