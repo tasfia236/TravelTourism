@@ -7,7 +7,7 @@
 
 <strong> Live Link : </strong> https://tourist-guide-e209e.web.app/
 
-<strong> * Ten points Features and characteristics of My website. </strong>
+<strong> *Features and characteristics of My website. </strong>
 
 * 3 roles Profile Page:
     1. User
